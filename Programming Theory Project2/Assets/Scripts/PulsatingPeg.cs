@@ -34,11 +34,11 @@ public class PulsatingPeg : PegController
 	{
         isPulsing = !isPulsing;
 	}
-	public override string audioPath
+	public override AudioClip sound
     {
         get
         {
-            return Path.Combine(Application.dataPath, "Audio", "grunt.ogg");
+            return SlotValueText.Instance.gruntSound;
         }
     }
 

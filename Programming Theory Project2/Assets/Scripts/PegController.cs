@@ -9,22 +9,21 @@ using UnityEngine.Networking;
 public class PegController : MonoBehaviour
 {
     private AudioSource[] pegAudio;
-    public AudioClip collisionSound;
     private int numAudioSources = 3;
     private int currentAudioSourceIndex = 0;
 
-    public virtual string audioPath
+    public virtual AudioClip sound
     {
         get
         {
-            return Path.Combine(Application.dataPath, "Audio", "plastic-collision.ogg");
+            return SlotValueText.Instance.plasticSound;
         }
     }
 
     // Start is called before the first frame update
-    async void Start()
+    void Start()
     {
-        await InitAudio();
+        InitAudio();
         InitColor();
     }
 
@@ -40,7 +39,7 @@ public class PegController : MonoBehaviour
 
     public virtual void PlaySound()
     {
-        pegAudio[currentAudioSourceIndex].PlayOneShot(collisionSound, 1.0f);
+        pegAudio[currentAudioSourceIndex].PlayOneShot(sound, 1.0f);
         currentAudioSourceIndex = (currentAudioSourceIndex + 1) % numAudioSources;
     }
 
@@ -56,13 +55,8 @@ public class PegController : MonoBehaviour
         sr.color = Color.blue;
     }
 
-    async public virtual Task<int> InitAudio()
+    public virtual void InitAudio()
     {
-        // wait for the load and set your property
-        collisionSound = await LoadClip(audioPath);
-
-        //... do something with it
-
         pegAudio = new AudioSource[numAudioSources];
         for (int i = 0; i < numAudioSources; i++)
         {
@@ -74,7 +68,7 @@ public class PegController : MonoBehaviour
             //pegAudio[i].outputAudioMixerGroup = sfxMixer;
             pegAudio[i].playOnAwake = false;
         }
-        return 0;
+        
 
     }
 
